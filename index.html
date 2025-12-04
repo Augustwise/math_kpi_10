@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Візуалізація Перетворень Лапласа</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"],
+          ],
+        },
+        svg: {
+          fontCache: "global",
+        },
+      };
+    </script>
+    <script
+      type="text/javascript"
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+
+    <!-- Plotly.js for graphing -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar / Navigation -->
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Laplace<br />Visualizer</h1>
+        </div>
+        <nav>
+          <h3>Оберіть функцію:</h3>
+          <ul id="function-list">
+            <!-- List items will be populated by JS -->
+          </ul>
+        </nav>
+
+        <div id="controls-section" style="display: none; margin-top: 2rem">
+          <h3>Параметри:</h3>
+          <div id="controls-container">
+            <!-- Controls will be populated by JS -->
+          </div>
+        </div>
+
+        <div class="info-footer">
+          <p>Вища математика</p>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="content">
+        <header class="content-header">
+          <h2 id="current-function-name">Одиничний стрибок</h2>
+        </header>
+
+        <!-- Formula Section -->
+        <section class="formula-section">
+          <div class="formula-card">
+            <h3>Часова область $f(t)$</h3>
+            <div id="formula-t" class="math-display">$$ f(t) = u(t) $$</div>
+          </div>
+          <div class="formula-symbol">
+            <span>&#8594;</span>
+            <small>Laplace</small>
+          </div>
+          <div class="formula-card">
+            <h3>s-область $F(s)$</h3>
+            <div id="formula-s" class="math-display">
+              $$ F(s) = \frac{1}{s} $$
+            </div>
+          </div>
+        </section>
+
+        <!-- Graphs Section -->
+        <section class="graphs-grid">
+          <div class="graph-card">
+            <h3>Графік у часі $f(t)$</h3>
+            <div id="plot-time" class="plot-container"></div>
+          </div>
+          <div class="graph-card">
+            <h3>Амплітудно-частотна характеристика $|F(j\omega)|$</h3>
+            <div id="plot-freq" class="plot-container"></div>
+          </div>
+        </section>
+
+        <!-- 3D Graph Section -->
+        <section class="graph-card" style="margin-top: 1.5rem">
+          <h3>3D Графік $|F(s)|$ на комплексній площині</h3>
+          <div
+            id="plot-3d"
+            class="plot-container"
+            style="min-height: 500px"
+          ></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/math-data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
