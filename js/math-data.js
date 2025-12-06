@@ -10,6 +10,11 @@ const mathFunctions = [
             if (w === 0) return null; // Singularity
             return 1 / Math.abs(w);
         },
+        calculate_s_phase: (w) => {
+            if (w === 0) return null;
+            // F(jw) = -j / w => purely imaginary
+            return Math.atan2(-1 / w, 0);
+        },
         calculate_s_complex: (sigma, omega, params) => {
             // F(s) = 1/s = 1/(sigma + j*omega)
             // |F(s)| = 1 / sqrt(sigma^2 + omega^2)
@@ -31,6 +36,11 @@ const mathFunctions = [
             const a = params.a || 1;
             // |1 / (a + jw)| = 1 / sqrt(a^2 + w^2)
             return 1 / Math.sqrt(a * a + w * w);
+        },
+        calculate_s_phase: (w, params) => {
+            const a = params.a || 1;
+            // Phase of 1 / (a + jw) is -atan2(w, a)
+            return Math.atan2(-w, a);
         },
         calculate_s_complex: (sigma, omega, params) => {
             const a = params.a || 1;
@@ -58,6 +68,12 @@ const mathFunctions = [
             const den = Math.abs(w0 * w0 - w * w);
             if (den === 0) return null; // Resonance
             return Math.abs(w0) / den;
+        },
+        calculate_s_phase: (w, params) => {
+            const w0 = params.w0 || 1;
+            const real = w0 * w0 - w * w;
+            if (real === 0) return null;
+            return Math.atan2(0, real);
         },
         calculate_s_complex: (sigma, omega, params) => {
             const w0 = params.w0 || 1;
@@ -93,6 +109,13 @@ const mathFunctions = [
             const den = Math.abs(w0 * w0 - w * w);
             if (den === 0) return null;
             return Math.abs(w) / den;
+        },
+        calculate_s_phase: (w, params) => {
+            const w0 = params.w0 || 1;
+            const real = w0 * w0 - w * w;
+            if (real === 0) return null;
+            const imagVal = w / real;
+            return Math.atan2(imagVal, 0);
         },
         calculate_s_complex: (sigma, omega, params) => {
             const w0 = params.w0 || 1;
@@ -135,6 +158,17 @@ const mathFunctions = [
             const imagPart = 2 * a * w;
             const denMag = Math.sqrt(realPart * realPart + imagPart * imagPart);
             return w0 / denMag;
+        },
+        calculate_s_phase: (w, params) => {
+            const a = params.a || 0.5;
+            const w0 = params.w0 || 3;
+            const realDen = a * a + w0 * w0 - w * w;
+            const imagDen = 2 * a * w;
+            const denMagSq = realDen * realDen + imagDen * imagDen;
+            if (denMagSq === 0) return null;
+            const real = (w0 * realDen) / denMagSq;
+            const imag = (-w0 * imagDen) / denMagSq;
+            return Math.atan2(imag, real);
         },
         calculate_s_complex: (sigma, omega, params) => {
             const a = params.a || 0.5;
