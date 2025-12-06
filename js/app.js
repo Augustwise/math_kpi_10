@@ -7,6 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const controlsContainer = document.getElementById('controls-container');
     
     let currentFunction = mathFunctions[0]; // Default to first function
+    let plotInitialized = false;
+    let plotUpdatePending = false;
+
+    // Reusable axes for the 3D plot to avoid re-creating arrays on every slider move
+    const SIGMA_RANGE = [];
+    const OMEGA_RANGE = [];
+    const COMPLEX_STEP = 0.2;
+    const COMPLEX_RANGE = 5;
+
+    for (let s = -COMPLEX_RANGE; s <= COMPLEX_RANGE; s += COMPLEX_STEP) {
+        SIGMA_RANGE.push(s);
+    }
+    for (let w = -COMPLEX_RANGE; w <= COMPLEX_RANGE; w += COMPLEX_STEP) {
+        OMEGA_RANGE.push(w);
+    }
 
     // Initialize UI
     initFunctionList();
@@ -94,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const val = parseFloat(e.target.value);
                     currentFunction.params[key] = val;
                     document.getElementById(`val-${key}`).textContent = val;
-                    plotGraphs();
+                    schedulePlot();
                 });
 
                 group.appendChild(label);
@@ -104,6 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             controlsSection.style.display = 'none';
         }
+    }
+
+    function schedulePlot() {
+        if (plotUpdatePending) return;
+        plotUpdatePending = true;
+        requestAnimationFrame(() => {
+            plotUpdatePending = false;
+            plotGraphs();
+        });
     }
 
     function plotGraphs() {
@@ -132,7 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
             showlegend: false
         };
 
-        Plotly.newPlot('plot-time', [traceTime], layoutTime, { responsive: true, displayModeBar: false });
+        if (plotInitialized) {
+            Plotly.react('plot-time', [traceTime], layoutTime, { responsive: true, displayModeBar: false });
+        } else {
+            Plotly.newPlot('plot-time', [traceTime], layoutTime, { responsive: true, displayModeBar: false });
+        }
 
         // --- Frequency Domain Plot (Magnitude) ---
         const wValues = [];
@@ -167,29 +195,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // We'll create a grid of sigma (real part) and omega (imaginary part)
         // Be careful with resolution to avoid performance issues
-        const sigmaRange = [];
-        const omegaRange = [];
         const zData = [];
-        
-        const step = 0.2; 
-        const range = 5;
-
-        // Prepare axis values
-        for (let s = -range; s <= range; s += step) {
-            sigmaRange.push(s);
-        }
-        for (let w = -range; w <= range; w += step) {
-            omegaRange.push(w);
-        }
 
         // Calculate Z values (Magnitude)
         // Plotly Surface expects z as an array of arrays (rows are y, cols are x)
         // Here: x is Sigma, y is Omega
-        for (let i = 0; i < omegaRange.length; i++) { // iterate rows (y - omega)
-            const w = omegaRange[i];
+        for (let i = 0; i < OMEGA_RANGE.length; i++) { // iterate rows (y - omega)
+            const w = OMEGA_RANGE[i];
             const row = [];
-            for (let j = 0; j < sigmaRange.length; j++) { // iterate cols (x - sigma)
-                const s = sigmaRange[j];
+            for (let j = 0; j < SIGMA_RANGE.length; j++) { // iterate cols (x - sigma)
+                const s = SIGMA_RANGE[j];
                 
                 let val = 0;
                 if (currentFunction.calculate_s_complex) {
@@ -206,8 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const trace3d = {
             z: zData,
-            x: sigmaRange,
-            y: omegaRange,
+            x: SIGMA_RANGE,
+            y: OMEGA_RANGE,
             type: 'surface',
             colorscale: 'Viridis',
             showscale: false,
@@ -235,7 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
             autosize: true
         };
 
-        Plotly.newPlot('plot-3d', [trace3d], layout3d, { responsive: true });
+        if (plotInitialized) {
+            Plotly.react('plot-3d', [trace3d], layout3d, { responsive: true });
+        } else {
+            Plotly.newPlot('plot-3d', [trace3d], layout3d, { responsive: true });
+        }
+
+        plotInitialized = true;
     }
     
     // Handle window resize for Plotly
