@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Frequency Domain Plot (Magnitude) ---
         const wValues = [];
         const FwValues = [];
+        const phaseValues = [];
 
         // Generate w from -10 to 10 with step 0.1
         for (let w = -10; w <= 10; w += 0.05) {
@@ -172,6 +173,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const val = currentFunction.calculate_s_mag(w, currentFunction.params);
             // Handle nulls (infinity/singularity) for plotting
             FwValues.push(val === null ? null : val);
+
+            const phase = currentFunction.calculate_s_phase
+                ? currentFunction.calculate_s_phase(w, currentFunction.params)
+                : null;
+            phaseValues.push(phase === null ? null : phase);
         }
 
         const traceFreq = {
@@ -189,7 +195,26 @@ document.addEventListener('DOMContentLoaded', () => {
             showlegend: false
         };
 
-        Plotly.newPlot('plot-freq', [traceFreq], layoutFreq, { responsive: true, displayModeBar: false });
+        const plotMethod = plotInitialized ? Plotly.react : Plotly.newPlot;
+        plotMethod('plot-freq', [traceFreq], layoutFreq, { responsive: true, displayModeBar: false });
+
+        // --- Frequency Domain Plot (Phase) ---
+        const tracePhase = {
+            x: wValues,
+            y: phaseValues,
+            mode: 'lines',
+            name: 'φ(ω)',
+            line: { color: '#0f766e', width: 3 }
+        };
+
+        const layoutPhase = {
+            margin: { t: 20, r: 20, b: 40, l: 40 },
+            xaxis: { title: 'Частота (ω)' },
+            yaxis: { title: 'Фаза φ(ω), рад' },
+            showlegend: false
+        };
+
+        plotMethod('plot-phase', [tracePhase], layoutPhase, { responsive: true, displayModeBar: false });
 
         // --- 3D Plot of |F(s)| over complex plane ---
         
@@ -263,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         Plotly.Plots.resize('plot-time');
         Plotly.Plots.resize('plot-freq');
+        Plotly.Plots.resize('plot-phase');
         Plotly.Plots.resize('plot-3d');
     });
 });
