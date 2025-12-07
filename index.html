@@ -93,22 +93,62 @@
         <!-- Graphs Section -->
         <section class="graphs-grid">
           <div class="graph-card">
-            <h3>Графік у часі $f(t)$</h3>
+            <div class="graph-card-header">
+              <h3>Графік у часі $f(t)$</h3>
+              <button
+                class="zoom-btn"
+                type="button"
+                aria-label="Розгорнути графік f(t)"
+                data-zoom-target="plot-time"
+              >
+                ⤢
+              </button>
+            </div>
             <div id="plot-time" class="plot-container"></div>
           </div>
           <div class="graph-card">
-            <h3>Амплітудно-частотна характеристика $|F(j\omega)|$</h3>
+            <div class="graph-card-header">
+              <h3>Амплітудно-частотна характеристика $|F(j\omega)|$</h3>
+              <button
+                class="zoom-btn"
+                type="button"
+                aria-label="Розгорнути АЧХ"
+                data-zoom-target="plot-freq"
+              >
+                ⤢
+              </button>
+            </div>
             <div id="plot-freq" class="plot-container"></div>
           </div>
           <div class="graph-card">
-            <h3>Фазово-частотна характеристика $\varphi(\omega)$</h3>
+            <div class="graph-card-header">
+              <h3>Фазово-частотна характеристика $\varphi(\omega)$</h3>
+              <button
+                class="zoom-btn"
+                type="button"
+                aria-label="Розгорнути ФЧХ"
+                data-zoom-target="plot-phase"
+              >
+                ⤢
+              </button>
+            </div>
             <div id="plot-phase" class="plot-container"></div>
           </div>
         </section>
 
         <!-- 3D Graph Section -->
         <section class="graph-card" style="margin-top: 1.5rem">
-          <h3>3D Графік $|F(s)|$ на комплексній площині</h3>
+          <div class="graph-card-header">
+            <h3>3D Графік $|F(s)|$ на комплексній площині</h3>
+            <button
+              class="zoom-btn"
+              type="button"
+              aria-label="Розгорнути 3D графік"
+              data-zoom-target="plot-3d"
+            >
+              ⤢
+            </button>
+          </div>
           <div
             id="plot-3d"
             class="plot-container"

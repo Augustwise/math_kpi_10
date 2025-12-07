@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const formulaSContainer = document.getElementById('formula-s');
     const controlsSection = document.getElementById('controls-section');
     const controlsContainer = document.getElementById('controls-container');
-    
+    const plotIds = ['plot-time', 'plot-freq', 'plot-phase', 'plot-3d'];
+
     let currentFunction = mathFunctions[0]; // Default to first function
     let plotInitialized = false;
     let plotUpdatePending = false;
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize UI
     initFunctionList();
+    initZoomButtons();
     updateDisplay();
 
     function initFunctionList() {
@@ -48,6 +50,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             li.appendChild(btn);
             functionList.appendChild(li);
+        });
+    }
+
+    function initZoomButtons() {
+        document.querySelectorAll('[data-zoom-target]').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-zoom-target');
+                const plotElement = document.getElementById(targetId);
+                if (!plotElement) return;
+
+                const fullscreenTarget = plotElement.closest('.graph-card') || plotElement;
+                toggleFullscreen(fullscreenTarget, plotElement);
+            });
         });
     }
 
@@ -283,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         plotInitialized = true;
     }
-    
+
     // Handle window resize for Plotly
     window.addEventListener('resize', () => {
         Plotly.Plots.resize('plot-time');
@@ -291,4 +306,45 @@ document.addEventListener('DOMContentLoaded', () => {
         Plotly.Plots.resize('plot-phase');
         Plotly.Plots.resize('plot-3d');
     });
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    function toggleFullscreen(fullscreenTarget, plotElement) {
+        if (!fullscreenTarget || !fullscreenTarget.requestFullscreen) return;
+
+        if (document.fullscreenElement === fullscreenTarget) {
+            document.exitFullscreen();
+            return;
+        }
+
+        const requestFullscreen = () => fullscreenTarget.requestFullscreen()
+            .then(() => {
+                Plotly.Plots.resize(plotElement);
+            })
+            .catch(() => {});
+
+        if (document.fullscreenElement && document.fullscreenElement !== fullscreenTarget) {
+            document.exitFullscreen().then(requestFullscreen);
+        } else {
+            requestFullscreen();
+        }
+    }
+
+    function handleFullscreenChange() {
+        const fullscreenElement = document.fullscreenElement;
+        if (fullscreenElement) {
+            const plot = fullscreenElement.querySelector('.js-plotly-plot')
+                || (fullscreenElement.classList.contains('js-plotly-plot') ? fullscreenElement : null);
+            if (plot) {
+                Plotly.Plots.resize(plot);
+            }
+        } else {
+            plotIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    Plotly.Plots.resize(el);
+                }
+            });
+        }
+    }
 });
