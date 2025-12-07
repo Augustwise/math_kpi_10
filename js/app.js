@@ -333,7 +333,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleFullscreenChange() {
         const fullscreenElement = document.fullscreenElement;
         if (fullscreenElement) {
-            const plot = fullscreenElement.querySelector('.plot-container');
+            const plot = fullscreenElement.querySelector('.js-plotly-plot')
+                || (fullscreenElement.classList.contains('js-plotly-plot') ? fullscreenElement : null);
             if (plot) {
                 Plotly.Plots.resize(plot);
             }
