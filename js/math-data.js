@@ -184,6 +184,93 @@ const mathFunctions = [
             return magDenom === 0 ? null : Math.abs(w0) / magDenom;
         },
         params: { a: 0.5, w0: 3 }
+    },
+    {
+        id: 'sh',
+        name: 'Гіперболічний синус (sh)',
+        formula_t: 'f(t) = \\sinh(\\omega_0 t)',
+        formula_s: 'F(s) = \\frac{\\omega_0}{s^2 - \\omega_0^2}',
+        calculate_t: (t, params) => {
+            const w0 = params.w0 || 1;
+            if (t < 0) return 0;
+            const x = w0 * t;
+            return (Math.exp(x) - Math.exp(-x)) / 2;
+        },
+        calculate_s_mag: (w, params) => {
+            const w0 = params.w0 || 1;
+            // For s = jw: F(jw) = w0 / (s^2 - w0^2) = -w0 / (w^2 + w0^2)
+            // => |F(jw)| = |w0| / (w^2 + w0^2)
+            const den = w * w + w0 * w0;
+            if (den === 0) return null;
+            return Math.abs(w0) / den;
+        },
+        calculate_s_phase: (w, params) => {
+            const w0 = params.w0 || 1;
+            const real = -(w * w + w0 * w0);
+            if (real === 0) return null;
+            return Math.atan2(0, real);
+        },
+        calculate_s_complex: (sigma, omega, params) => {
+            const w0 = params.w0 || 1;
+            // F(s) = w0 / (s^2 - w0^2)
+            // s = sigma + j*omega
+            // s^2 = (sigma^2 - omega^2) + j(2*sigma*omega)
+            // Denom = (sigma^2 - omega^2 - w0^2) + j(2*sigma*omega)
+            const sigma2 = sigma * sigma;
+            const omega2 = omega * omega;
+            const w02 = w0 * w0;
+            
+            const realDenom = sigma2 - omega2 - w02;
+            const imagDenom = 2 * sigma * omega;
+            const magDenom = Math.sqrt(realDenom * realDenom + imagDenom * imagDenom);
+            
+            return magDenom === 0 ? null : Math.abs(w0) / magDenom;
+        },
+        params: { w0: 1 }
+    },
+    {
+        id: 'ch',
+        name: 'Гіперболічний косинус (ch)',
+        formula_t: 'f(t) = \\cosh(\\omega_0 t)',
+        formula_s: 'F(s) = \\frac{s}{s^2 - \\omega_0^2}',
+        calculate_t: (t, params) => {
+            const w0 = params.w0 || 1;
+            if (t < 0) return 0;
+            const x = w0 * t;
+            return (Math.exp(x) + Math.exp(-x)) / 2;
+        },
+        calculate_s_mag: (w, params) => {
+            const w0 = params.w0 || 1;
+            // For s = jw: F(jw) = jw / (s^2 - w0^2) = -jw / (w^2 + w0^2)
+            // => |F(jw)| = |w| / (w^2 + w0^2)
+            const den = w * w + w0 * w0;
+            if (den === 0) return null;
+            return Math.abs(w) / den;
+        },
+        calculate_s_phase: (w, params) => {
+            const w0 = params.w0 || 1;
+            const real = -(w * w + w0 * w0);
+            if (real === 0) return null;
+            const imagVal = w / real;
+            return Math.atan2(imagVal, 0);
+        },
+        calculate_s_complex: (sigma, omega, params) => {
+            const w0 = params.w0 || 1;
+            // F(s) = s / (s^2 - w0^2)
+            // |F(s)| = |s| / |s^2 - w0^2|
+            const sMag = Math.sqrt(sigma * sigma + omega * omega);
+            
+            const sigma2 = sigma * sigma;
+            const omega2 = omega * omega;
+            const w02 = w0 * w0;
+            
+            const realDenom = sigma2 - omega2 - w02;
+            const imagDenom = 2 * sigma * omega;
+            const magDenom = Math.sqrt(realDenom * realDenom + imagDenom * imagDenom);
+            
+            return magDenom === 0 ? null : sMag / magDenom;
+        },
+        params: { w0: 1 }
     }
 ];
 
