@@ -100,11 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 let min = 0.1, max = 10, step = 0.1;
 
                 if (key === 'w0') {
-                    labelText = 'Частота (ω₀)';
+                    labelText = 'Параметр (a)';
                     min = 0.5; max = 10; step = 0.1;
                 } else if (key === 'a') {
-                    labelText = 'Затухання (a)';
+                    labelText = 'Затухання (α)';
                     min = 0.1; max = 5; step = 0.1;
+                } else if (key === 'sigma') {
+                    labelText = 'Показник (σ)';
+                    min = -5; max = -0.1; step = 0.1;
                 }
 
                 const group = document.createElement('div');
