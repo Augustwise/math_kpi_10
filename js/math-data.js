@@ -1,7 +1,7 @@
 const mathFunctions = [
     {
         id: 'unit_step',
-        name: 'Одиничний стрибок (Unit Step)',
+        name: 'Функція Хевісайда',
         formula_t: 'f(t) = u(t) = \\begin{cases} 1, & t \\ge 0 \\\\ 0, & t < 0 \\end{cases}',
         formula_s: 'F(s) = \\frac{1}{s}',
         calculate_t: (t) => t >= 0 ? 1 : 0,
