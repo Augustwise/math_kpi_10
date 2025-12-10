@@ -201,6 +201,8 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 400px;
+  overflow: hidden;
+  position: relative;
 }
 
 .graph-card h3 {
@@ -214,6 +216,13 @@ body {
   flex: 1;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--border-radius) - 2px);
+}
+
+.plot-container.plot-3d {
+  min-height: 500px;
 }
 
 .graph-card-header {
