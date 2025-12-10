@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     labelText = 'Затухання (α)';
                     min = 0.1; max = 5; step = 0.1;
                 } else if (key === 'sigma') {
-                    labelText = 'Показник (σ)';
+                    labelText = 'Показник (a)';
                     min = -5; max = -0.1; step = 0.1;
                 }
 

@@ -26,8 +26,8 @@ const mathFunctions = [
     {
         id: 'exponential',
         name: 'Експонента',
-        formula_t: 'f(t) = e^{\\sigma t}\\eta(t), \\quad \\sigma < 0',
-        formula_s: 'F(p) = \\frac{1}{p - \\sigma}, \\; \\Re p > \\sigma',
+        formula_t: 'f(t) = e^{a t}\\eta(t), \\quad a < 0',
+        formula_s: 'F(p) = \\frac{1}{p - a}, \\; \\Re p > a',
         calculate_t: (t, params) => {
             const sigma0 = params.sigma ?? -1;
             return t >= 0 ? Math.exp(sigma0 * t) : 0;
