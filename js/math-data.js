@@ -186,7 +186,7 @@ const mathFunctions = [
     },
     {
         id: 'sh',
-        name: 'Гіперболічний синус (sinh)',
+        name: 'Гіперболічний синус',
         formula_t: 'f(t) = \\sinh(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{a}{p^2 - a^2}, \\; \\Re p > |a|',
         calculate_t: (t, params) => {
@@ -229,7 +229,7 @@ const mathFunctions = [
     },
     {
         id: 'ch',
-        name: 'Гіперболічний косинус (cosh)',
+        name: 'Гіперболічний косинус',
         formula_t: 'f(t) = \\cosh(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{p}{p^2 - a^2}, \\; \\Re p > |a|',
         calculate_t: (t, params) => {
