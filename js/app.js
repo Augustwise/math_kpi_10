@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentFunctionName = document.getElementById('current-function-name');
     const formulaTContainer = document.getElementById('formula-t');
     const formulaSContainer = document.getElementById('formula-s');
+    const phaseFormulaContainer = document.getElementById('phase-formula-display');
     const controlsSection = document.getElementById('controls-section');
     const controlsContainer = document.getElementById('controls-container');
     const plotIds = ['plot-time', 'plot-freq', 'plot-phase', 'plot-3d'];
@@ -74,9 +75,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // We need to use MathJax to re-render the formulas
         formulaTContainer.innerHTML = `$$ ${currentFunction.formula_t} $$`;
         formulaSContainer.innerHTML = `$$ ${currentFunction.formula_s} $$`;
-        
+
+        if (phaseFormulaContainer) {
+            const formula = currentFunction.phase_formula || '';
+            phaseFormulaContainer.style.display = formula ? 'block' : 'none';
+            phaseFormulaContainer.innerHTML = formula ? `$$ ${formula} $$` : '';
+        }
+
         if (window.MathJax) {
-            MathJax.typesetPromise([formulaTContainer, formulaSContainer]).catch((err) => console.error(err));
+            const elementsToTypeset = [formulaTContainer, formulaSContainer];
+            if (phaseFormulaContainer) {
+                elementsToTypeset.push(phaseFormulaContainer);
+            }
+            MathJax.typesetPromise(elementsToTypeset).catch((err) => console.error(err));
         }
 
         // Update Controls

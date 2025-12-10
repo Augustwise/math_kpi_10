@@ -4,6 +4,7 @@ const mathFunctions = [
         name: 'Функція Хевісайда',
         formula_t: 'f(t) = 1\\cdot\\eta(t) = \\begin{cases} 1, & t \\ge 0 \\\\ 0, & t < 0 \\end{cases}',
         formula_s: 'F(p) = \\frac{1}{p}, \\; \\Re p > 0',
+        phase_formula: '\\varphi(\\omega)= \\begin{cases}+\\tfrac{\\pi}{2}, & \\omega<0 \\\\ -\\tfrac{\\pi}{2}, & \\omega>0 \\end{cases}',
         calculate_t: (t) => t >= 0 ? 1 : 0,
         calculate_s_mag: (w) => {
             // |1/(jw)| = 1/w
@@ -28,6 +29,7 @@ const mathFunctions = [
         name: 'Експонента',
         formula_t: 'f(t) = e^{a t}\\eta(t), \\quad a < 0',
         formula_s: 'F(p) = \\frac{1}{p - a}, \\; \\Re p > a',
+        phase_formula: '\\varphi(\\omega) = -\\arctan\\left(\\frac{\\omega}{-a}\\right),\\; a<0',
         calculate_t: (t, params) => {
             const sigma0 = params.sigma ?? -1;
             return t >= 0 ? Math.exp(sigma0 * t) : 0;
@@ -57,6 +59,7 @@ const mathFunctions = [
         name: 'Синус',
         formula_t: 'f(t) = \\sin(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{a}{p^2 + a^2}, \\; \\Re p > 0',
+        phase_formula: '\\varphi(\\omega)= \\begin{cases}0, & |\\omega|<a \\\\ \\pi, & |\\omega|>a \\end{cases}',
         calculate_t: (t, params) => {
             const w0 = params.w0 || 1;
             return t >= 0 ? Math.sin(w0 * t) : 0;
@@ -98,6 +101,7 @@ const mathFunctions = [
         name: 'Косинус',
         formula_t: 'f(t) = \\cos(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{p}{p^2 + a^2}, \\; \\Re p > 0',
+        phase_formula: '\\varphi(\\omega)= \\tfrac{\\pi}{2}\\,\\operatorname{sgn}\\big(\\omega(a^2-\\omega^2)\\big)',
         calculate_t: (t, params) => {
             const w0 = params.w0 || 1;
             return t >= 0 ? Math.cos(w0 * t) : 0;
@@ -142,6 +146,7 @@ const mathFunctions = [
         name: 'Затухаючий синус',
         formula_t: 'f(t) = e^{-\\alpha t} \\sin(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{a}{(p+\\alpha)^2 + a^2}, \\; \\Re p > -\\alpha',
+        phase_formula: '\\varphi(\\omega)= -\\arctan\\left(\\frac{2\\alpha\\omega}{\\alpha^2 + a^2 - \\omega^2}\\right)',
         calculate_t: (t, params) => {
             const a = params.a || 0.5;
             const w0 = params.w0 || 3;
@@ -189,6 +194,7 @@ const mathFunctions = [
         name: 'Гіперболічний синус',
         formula_t: 'f(t) = \\sinh(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{a}{p^2 - a^2}, \\; \\Re p > |a|',
+        phase_formula: '\\varphi(\\omega)= \\pi',
         calculate_t: (t, params) => {
             const a = params.w0 || 1;
             if (t < 0) return 0;
@@ -232,6 +238,7 @@ const mathFunctions = [
         name: 'Гіперболічний косинус',
         formula_t: 'f(t) = \\cosh(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{p}{p^2 - a^2}, \\; \\Re p > |a|',
+        phase_formula: '\\varphi(\\omega)= -\\tfrac{\\pi}{2}\\operatorname{sgn}(\\omega)',
         calculate_t: (t, params) => {
             const a = params.w0 || 1;
             if (t < 0) return 0;
