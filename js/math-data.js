@@ -59,7 +59,7 @@ const mathFunctions = [
         name: 'Синус',
         formula_t: 'f(t) = \\sin(a t)\\eta(t)',
         formula_s: 'F(p) = \\frac{a}{p^2 + a^2}, \\; \\Re p > 0',
-        phase_formula: '\\varphi(\\omega)= \\begin{cases}0, & |\\omega|<a \\\\ \\pi, & |\\omega|>a \\end{cases}',
+        phase_formula: '\\varphi(\\omega)= \\begin{cases}0, & |\\omega|\\lt a \\\\ \\pi, & |\\omega|\\gt a \\end{cases}',
         calculate_t: (t, params) => {
             const w0 = params.w0 || 1;
             return t >= 0 ? Math.sin(w0 * t) : 0;
