@@ -20,13 +20,13 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 .app-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Sidebar Styles */
