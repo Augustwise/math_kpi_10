@@ -20,13 +20,13 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 .app-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Sidebar Styles */
@@ -201,6 +201,8 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 400px;
+  overflow: hidden;
+  position: relative;
 }
 
 .graph-card h3 {
@@ -214,6 +216,13 @@ body {
   flex: 1;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--border-radius) - 2px);
+}
+
+.plot-container.plot-3d {
+  min-height: 500px;
 }
 
 .graph-card-header {
