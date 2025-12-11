@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentFunctionName = document.getElementById('current-function-name');
     const formulaTContainer = document.getElementById('formula-t');
     const formulaSContainer = document.getElementById('formula-s');
+    const magnitudeFormulaContainer = document.getElementById('freq-formula-display');
     const phaseFormulaContainer = document.getElementById('phase-formula-display');
     const controlsSection = document.getElementById('controls-section');
     const controlsContainer = document.getElementById('controls-container');
@@ -76,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         formulaTContainer.innerHTML = `$$ ${currentFunction.formula_t} $$`;
         formulaSContainer.innerHTML = `$$ ${currentFunction.formula_s} $$`;
 
+        if (magnitudeFormulaContainer) {
+            const formula = currentFunction.magnitude_formula || '';
+            magnitudeFormulaContainer.style.display = formula ? 'block' : 'none';
+            magnitudeFormulaContainer.innerHTML = formula ? `$$ ${formula} $$` : '';
+        }
+
         if (phaseFormulaContainer) {
             const formula = currentFunction.phase_formula || '';
             phaseFormulaContainer.style.display = formula ? 'block' : 'none';
@@ -84,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (window.MathJax) {
             const elementsToTypeset = [formulaTContainer, formulaSContainer];
+            if (magnitudeFormulaContainer) {
+                elementsToTypeset.push(magnitudeFormulaContainer);
+            }
             if (phaseFormulaContainer) {
                 elementsToTypeset.push(phaseFormulaContainer);
             }
